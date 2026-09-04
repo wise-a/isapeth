@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISAPETH</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <h1>Ideological Scale, Analysis, Positioning, Evaluation, Taxonomy & Heuristics (ISAPETH)</h1>
+            <p>Two-Dimensional Model Inspired by NOMINATE Coordinate Space</p>
+        </div>
+        <div class="header-actions">
+            <button id="btn-export">Export JSON</button>
+            <input type="file" id="file-import" accept=".json" style="display: none;">
+            <button id="btn-import">Import JSON</button>
+            <button id="btn-reset" class="danger">Reset All</button>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Left Column: Policy Inputs -->
+        <section class="inputs-section">
+            <div class="section-header">
+                <h2>Policy Positions</h2>
+                <p class="subtitle">Enter continuous values (-10 to +10)</p>
+            </div>
+            
+            <!-- BULK SHIFT PANEL -->
+            <div class="bulk-shift-panel">
+                <h4>Bulk Adjustments (Shift values by points)</h4>
+                <div class="bulk-controls">
+                    <select id="bulk-target">
+                        <option value="dim_economy">Entire Economy Dimension</option>
+                        <option value="dim_other">Entire Other Dimension</option>
+                        <optgroup label="Economy Categories" id="opt-econ-cats"></optgroup>
+                        <optgroup label="Other Categories" id="opt-other-cats"></optgroup>
+                    </select>
+                    <input type="number" id="bulk-amount" step="0.1" placeholder="e.g. -1.5 or +2">
+                    <button id="btn-apply-bulk">Shift</button>
+                </div>
+            </div>
+            
+            <div id="economy-container" class="dimension-group">
+                <h3>Dimension 1: Economy</h3>
+                <div class="axis-legend">
+                    <span>-10 Progressive / Left</span>
+                    <span>0 Center</span>
+                    <span>+10 Conservative / Right</span>
+                </div>
+                <div id="economy-policies"></div>
+            </div>
+
+            <div id="other-container" class="dimension-group">
+                <h3>Dimension 2: Other (Social, Institutional, Foreign)</h3>
+                <div class="axis-legend">
+                    <span>-10 Progressive</span>
+                    <span>0 Center</span>
+                    <span>+10 Conservative</span>
+                </div>
+                <div id="other-policies"></div>
+            </div>
+        </section>
+
+        <!-- Right Column: Visualization & Results -->
+        <section class="results-section">
+            
+            <div class="card map-card">
+                <h2>2D Ideological Map</h2>
+                <div class="canvas-container">
+                    <canvas id="ideology-map" width="500" height="500"></canvas>
+                </div>
+                <p class="map-note">X-Axis: Economy &nbsp;|&nbsp; Y-Axis: Other (Top: Progressive, Bottom: Conservative)</p>
+            </div>
+
+            <div class="card summary-card">
+                <h2>Profile Summary</h2>
+                
+                <div class="score-block">
+                    <h4>Economic Dimension</h4>
+                    <div class="score-display">
+                        <span id="score-econ" class="big-score">0.00</span>
+                        <span id="class-econ" class="class-label">Economic Center</span>
+                    </div>
+                    <div class="heterogeneity">Spread: <span id="het-econ">Coherent</span></div>
+                </div>
+
+                <div class="score-block">
+                    <h4>Other Dimension</h4>
+                    <div class="score-display">
+                        <span id="score-other" class="big-score">0.00</span>
+                        <span id="class-other" class="class-label">Social/Cultural Center</span>
+                    </div>
+                    <div class="heterogeneity">Spread: <span id="het-other">Coherent</span></div>
+                </div>
+
+                <div class="combined-block">
+                    <h4>Combined Position</h4>
+                    <p id="class-combined" class="combined-label">Economic Center / Social/Cultural Center</p>
+                    <p id="profile-description" class="profile-desc"></p>
+                </div>
+            </div>
+
+            <div class="card explanation-card">
+                <h2>Why Did I Get This Score?</h2>
+                <div class="explanation-grid">
+                    <div class="explain-col" id="explain-econ"></div>
+                    <div class="explain-col" id="explain-other"></div>
+                </div>
+            </div>
+
+            <div class="card compare-card">
+                <h2>Compare Ideologies</h2>
+                <select id="preset-selector">
+                    <option value="">-- Select a Reference Profile --</option>
+                </select>
+                <div id="distance-readout" class="distance-readout"></div>
+            </div>
+
+            <div class="card category-card">
+                <h2>Category Summaries</h2>
+                <div id="category-summaries" class="cat-grid"></div>
+            </div>
+
+            <div class="methodology-note">
+                <strong>Methodology Note:</strong> This tool is a two-dimensional ideology mapper inspired by the coordinate-space concept of NOMINATE and DW-NOMINATE. It is not an implementation of the original DW-NOMINATE statistical estimation procedure. Actual NOMINATE estimates are derived from voting behavior and require empirical roll-call data and rely on a distinguished calculation method.
+            </div>
+        </section>
+    </main>
+
+    <script src="data/policies.js"></script>
+    <script src="data/presets.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
